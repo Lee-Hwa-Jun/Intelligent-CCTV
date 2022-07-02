@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CCTV</title>
+</head>
+<body>
+<style>
+
+    body{
+        background-color : skyblue;
+    }
+    .main{
+        background-color: thistle;
+        border : 1px solid black;
+        margin : 1%;
+        background :
+    }
+    .sub{
+        background-color: honeydew;
+        border : 1px solid black;
+        margin : 5%;
+    }
+    .btn{
+        background-color: lightcyan;
+        border: 3px solid black;
+        font-color: black;
+        margin : 5px 0 5px 30px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+    }
+</style>
+{% load static %}
+{% block content %}
+<h1>솔골길 CCTV 메인 페이지</h1>
+<hr/>
+<h2>-기능-</h2>
+<ul>
+    <li>사람이 인식될때만 cctv녹화를 진행하며 사건의 빠른 탐색이 가능</li>
+    <li>사람이 인식 된 후 ~ 사람이 없어진 후 + 10초동안 녹화</li>
+    <li>모든 접속자는 cctv 영상 다운로드 가능</li>
+    <li>녹화 된 영상은 7일 후 자동 삭제</li>
+    <li>기능 보완 또는 수정 피드백 : 010-4120-5415</li>
+</ul>
+<hr/>
+<ul>
+{% for group in files %}
+    <div class="main">
+        <details>
+            <summary><h3>{{group.0|slice:"0:4"}}년{{group.0|slice:"4:6"}}월{{group.0|slice:"6:8"}}일 녹화 된 영상들 보려면 클릭</h3></summary>
+            {% for file in group %}
+                <div class="sub">
+                    <ol><h2>{{file|slice:"9:11"}}시{{file|slice:"12:14"}}분</h2></ol>
+                    {% with 'images/'|add:file|add:'.jpg' as image_static %}
+                    <img src="{% static image_static %}" alt="{{file}}.jpg">
+                    {% endwith %}
+                    <br/>
+                    <button class="btn" type="button"><a href="/download/{{file}}" download>다운로드</a></button>
+                </div>
+
+            {% endfor %}
+        </details>
+        <hr/>
+    </div>
+{% endfor %}
+</ul>
+{% endblock %}
+</body>
+</html>
